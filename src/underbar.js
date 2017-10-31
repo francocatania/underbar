@@ -130,9 +130,9 @@
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     var mappedArray = [];
-    for (var i = 0; i < collection.length; i++) {
-      mappedArray.push(iterator(collection[i]));
-    }
+    _.each(collection, function(value) {
+      mappedArray.push(iterator(value));
+    });
     return mappedArray;
   };
 
@@ -174,21 +174,30 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
   _.reduce = function(collection, iterator, accumulator) {
     var accumuledResult;
     if (accumulator !== undefined) {
       accumuledResult = accumulator;
-      for (var i = 0; i < collection.length; i++) {
-        accumuledResult = iterator(accumuledResult, collection[i]);
-      }
+      _.each(collection, function(value, key, collection) {
+        accumuledResult = iterator(accumuledResult, value);
+      });
     } else {
-      accumuledResult = collection[0];
-      for (var i = 1; i < collection.length; i++) {
-        accumuledResult = iterator(accumuledResult, collection[i]);  
-      }
+      _.each(collection, function(value, key, collection) {
+        if (key === 0) {
+          accumuledResult = collection[key];  
+        } else {
+          accumuledResult = iterator(accumuledResult, value);
+        }
+      });
     }
     return accumuledResult;
   };
+
+
+
+
+
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
