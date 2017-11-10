@@ -103,10 +103,15 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     var dupFree = [];
-    // if (iterator !=== undefined) {
-    //   // Didn't get it.
-    // } 
-    if (isSorted) {
+    if (iterator !== undefined) {
+      var uniqueIterationValues = [];
+      for (var i = 0; i < array.length; i++) {
+        if (!uniqueIterationValues.includes(iterator(array[i]))) {
+          dupFree.push(array[i]);
+          uniqueIterationValues.push(iterator(array[i]));
+        }
+      }
+    } else if (isSorted) {
       dupFree.push(array[0]);
       for (var i = 1; i < array.length; i++) {
         if (array[i] !== dupFree[dupFree.length - 1]) {
@@ -391,6 +396,7 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+      
   };
 
   // Sort the object's values by a criterion produced by an iterator.
